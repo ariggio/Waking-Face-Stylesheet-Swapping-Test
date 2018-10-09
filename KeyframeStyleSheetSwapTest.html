@@ -1,0 +1,85 @@
+<!--CREATED BY ALLY RIGGIO-->
+<!--POSTED 10/9/2018-->
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+	<meta charset="UTF-8">
+	<title>Keyframe and Stylesheet Swapping Test</title>
+	<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
+</head>
+
+<body onload="startTime()">
+	<!--DIV SET WITH BACKGROUND IMAGE, WHICH IS MANIPULATED BY ANIMATION-->
+	<div class="container">
+		<div id="face" style="width:100%; height:300px; background-image: url('frames/Night_1.png'); background-repeat: no-repeat; background-position:center; background-size:contain; margin:0;"></div>
+		<p>The gradient changes depending on the time</p>
+		<div id="clock"></div>
+		<button class="button" onclick="wakeFace()"><p>Wake</p></button>
+	</div>
+
+	<script>
+		//CHECK HOUR TO DETERMINE WHICH ANIMATION PLAYS UPON CLICK
+		function wakeFace() {
+			var hour = new Date().getHours();
+			if (8 <= hour&&hour < 20) {
+				document.getElementById("face").className = "faceWake";
+				//TIMEOUT TO RESET ANIMATION
+				setTimeout(function(){
+					document.getElementById("face");
+					face.classList.remove("faceWake");
+				}, 10000);
+			} else {
+				document.getElementById("face").className ="faceSnooze";
+				//TIMEOUT TO RESET ANIMATION
+				setTimeout(function(){
+					document.getElementById("face");
+					face.classList.remove("faceSnooze");
+				}, 10000);
+			}
+		}
+
+		//GET TIME AND DISPLAY ON 12-HOUR CLOCK
+		function startTime() {
+			var today = new Date();
+			var hh = today.getHours();
+			var h = hh;
+			var m = today.getMinutes();
+			var s = today.getSeconds();
+			var dd = "AM";
+
+			if (hh >= 12) {
+				h = hh - 12;
+				dd = "PM";
+			}
+			if (h == 0) {
+				h = 12;
+			}
+
+			m = checkTime(m);
+			s = checkTime(s);
+			document.getElementById('clock').innerHTML = h + ":" + m + ":" + s + " " + dd;
+			var t = setTimeout(startTime, 500);
+		}
+		function checkTime(i) {
+			if (i < 10) {i = "0" + i};
+			return i;
+		}
+
+		//CHECK HOUR TO DETERMINE WHICH STYLESHEET IS USED
+		function getStylesheet() {
+			var currentTime = new Date().getHours();
+			if (0 <= currentTime&&currentTime < 13) {
+				document.write("<link rel='stylesheet' href='style.css' type='text/css'>");
+			}
+			if (13 <= currentTime&&currentTime < 24) {
+				document.write("<link rel='stylesheet' href='style2.css' type='text/css'>");
+				document.getElementById("face").style.backgroundImage = "url('frames/Day_1.png')";
+			}
+		}
+		getStylesheet();
+	</script>
+
+	<noscript><link href="main.css" rel="stylesheet"></noscript>
+</body>
+
+</html>
